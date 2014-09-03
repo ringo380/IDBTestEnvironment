@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Setup Environment
+alias tohex="printf '%x\n’"
+alias todec="printf '%d\n'"
+
 # Download/extract sample db
 cd /tmp
 wget http://downloads.mysql.com/docs/sakila-db.tar.gz
