@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Setup Environment
-alias tohex="printf '%x\n’"
+alias tohex="printf '%x\n'"
 alias todec="printf '%d\n'"
 
 # Download/extract sample db
