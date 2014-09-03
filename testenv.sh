@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Setup Environment
+converttodec () { echo "ibase=16; $1" | bc; }
+alias todec=converttodec
 alias tohex="printf '%x\n'"
-alias todec="printf '%d\n'"
 
 # Download/extract sample db
 cd /tmp
