@@ -73,7 +73,7 @@ alias tohex="printf '%x\n'"
 echo "Installing RVM.."
 cd /root
 \curl -sSL https://get.rvm.io | bash
-sleep 15
+`source /etc/profile.d/rvm.sh`
 source /etc/profile.d/rvm.sh
 
 echo "Installing Ruby 1.9.3.."
