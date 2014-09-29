@@ -73,8 +73,7 @@ alias tohex="printf '%x\n'"
 echo "Installing RVM.."
 cd /root
 \curl -sSL https://get.rvm.io | bash
-`source /etc/profile.d/rvm.sh`
-source /etc/profile.d/rvm.sh
+export PATH="/usr/local/rvm/gems/ruby-1.9.3-p547/bin:/usr/local/rvm/gems/ruby-1.9.3-p547@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p547/bin:/usr/local/rvm/bin:/usr/local/jdk/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:/root/bin"
 
 echo "Installing Ruby 1.9.3.."
 rvm install ruby-1.9.3
