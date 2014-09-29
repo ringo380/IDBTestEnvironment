@@ -88,6 +88,8 @@ if yum list installed "git" > /dev/null 2>&1; then echo "Git already installed."
 echo "Installing Math::Int64 if needed.."
 perldoc -l Math::Int64 2> /dev/null | grep "Int64.pm" || cpan Math::Int64
 
+source /etc/profile.d/rvm.sh
+
 echo "Installing innodb_ruby.."
 cd /root
 git clone https://github.com/jeremycole/innodb_ruby.git
@@ -124,5 +126,5 @@ cp /etc/my.cnf{,.orig}
 cp -Rp /var/lib/mysql/* /root/mysql.bak/
 echo "Dumping current databases to /root/mysql.bak.."
 mysqldump --all-databases > /root/mysql.bak/mysqldump.sql
-mysqldump --single-transaction --all-databases > /root/mysql.bak/mysqldump_st.sql
-mysqldump --single-transaction testdb > /tmp/testdb.sql
+mysqldump --single-transaction --all-databases -E > /root/mysql.bak/mysqldump_st.sql
+mysqldump --single-transaction -E testdb > /tmp/testdb.sql
