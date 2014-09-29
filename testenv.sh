@@ -120,12 +120,12 @@ mysql -e "SOURCE sakila-schema.sql"
 mysql -e "SOURCE sakila-data.sql"
 
 # Make copies of everything in the current state
-echo "Making backup copies of existing data.."
 mkdir /root/mysql.bak
 echo "Backing up current my.cnf to /etc/my.cnf.orig.."
 cp /etc/my.cnf{,.orig}
+echo "Copying current data directory to /root/mysql.bak.."
 cp -Rp /var/lib/mysql/* /root/mysql.bak/
 echo "Dumping current databases to /root/mysql.bak.."
-mysqldump --all-databases > /root/mysql.bak/mysqldump.sql
+mysqldump --all-databases -E > /root/mysql.bak/mysqldump.sql
 mysqldump --single-transaction --all-databases -E > /root/mysql.bak/mysqldump_st.sql
 mysqldump --single-transaction -E testdb > /tmp/testdb.sql
