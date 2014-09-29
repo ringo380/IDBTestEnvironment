@@ -66,9 +66,6 @@ function isinstalled {
   fi
 }
 
-if isinstalled
-
-
 #converttodec () { echo "ibase=16; $1" | bc; }
 #alias todec=todec
 alias tohex="printf '%x\n'"
