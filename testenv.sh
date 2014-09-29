@@ -73,14 +73,35 @@ if isinstalled
 #alias todec=todec
 alias tohex="printf '%x\n'"
 
+echo "Installing RVM..\n"
+\curl -sSL https://get.rvm.io | bash
+source /etc/profile.d/rvm.sh
+
+echo "Installing Ruby 1.9.3..\n"
+rvm install ruby-1.9.3
 
 # Install bzr if it's not installed..
-echo "Checking if Bazaar is installed..\n";
-if isinstalled "bzr"; then echo "Bazaar already installed.\n"; else echo "Not installed, installing now.."; yum -y install bzr; fi
+echo "Checking if Bazaar is installed..\n"
+if isinstalled "bzr"; then echo "Bazaar already installed.\n"; else echo "Not installed, installing now..\n"; yum -y install bzr; fi
 
-echo "Installing Math::Int64 if needed..\n";
+echo "Checking if git is installed..\n"
+if isinstalled "git"; then echo "Git already installed.\n"; else echo "Not installed, installing now..\n"; yum -y install git; fi
+
+echo "Installing Math::Int64 if needed..\n"
 perldoc -l Math::Int64 2> /dev/null | grep "Int64.pm" || cpan Math::Int64
 
+echo "Installing innodb_ruby..\n"
+cd /root
+git clone https://github.com/jeremycole/innodb_ruby.git
+cd /root/innodb_ruby
+gem build innodb_ruby.gemspec
+gem install innodb_ruby-0.9.10.gem
+
+echo "Installing idb-utils..\n"
+cd /root
+git clone https://github.com/ringo380/idb-utils.git
+
+echo "Setting up test database..\n"
 # Download/extract sample db
 cd /tmp
 wget http://downloads.mysql.com/docs/sakila-db.tar.gz
@@ -98,9 +119,12 @@ mysql -e "SOURCE sakila-schema.sql"
 mysql -e "SOURCE sakila-data.sql"
 
 # Make copies of everything in the current state
+echo "Making backup copies of existing data..\n"
 mkdir /root/mysql.bak
+echo "Backing up current my.cnf to /etc/my.cnf.orig..\n"
 cp /etc/my.cnf{,.orig}
 cp -Rp /var/lib/mysql/* /root/mysql.bak/
+echo "Dumping current databases to /root/mysql.bak..\n"
 mysqldump --all-databases > /root/mysql.bak/mysqldump.sql
 mysqldump --single-transaction --all-databases > /root/mysql.bak/mysqldump_st.sql
 mysqldump --single-transaction testdb > /tmp/testdb.sql
