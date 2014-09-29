@@ -70,36 +70,36 @@ function isinstalled {
 #alias todec=todec
 alias tohex="printf '%x\n'"
 
-echo "Installing RVM..\n"
+echo "Installing RVM.."
 \curl -sSL https://get.rvm.io | bash
 sleep 15
 source /etc/profile.d/rvm.sh
 
-echo "Installing Ruby 1.9.3..\n"
+echo "Installing Ruby 1.9.3.."
 rvm install ruby-1.9.3
 
 # Install bzr if it's not installed..
-echo "Checking if Bazaar is installed..\n"
-if yum list installed "bzr" > /dev/null 2>&1; then echo "Bazaar already installed.\n"; else echo "Not installed, installing now..\n"; yum -y install bzr; fi
+echo "Checking if Bazaar is installed.."
+if yum list installed "bzr" > /dev/null 2>&1; then echo "Bazaar already installed."; else echo "Not installed, installing now.."; yum -y install bzr; fi
 
-echo "Checking if git is installed..\n"
-if yum list installed "git" > /dev/null 2>&1; then echo "Git already installed.\n"; else echo "Not installed, installing now..\n"; yum -y install git; fi
+echo "Checking if git is installed.."
+if yum list installed "git" > /dev/null 2>&1; then echo "Git already installed."; else echo "Not installed, installing now.."; yum -y install git; fi
 
-echo "Installing Math::Int64 if needed..\n"
+echo "Installing Math::Int64 if needed.."
 perldoc -l Math::Int64 2> /dev/null | grep "Int64.pm" || cpan Math::Int64
 
-echo "Installing innodb_ruby..\n"
+echo "Installing innodb_ruby.."
 cd /root
 git clone https://github.com/jeremycole/innodb_ruby.git
 cd /root/innodb_ruby
 gem build innodb_ruby.gemspec
 gem install innodb_ruby-0.9.10.gem
 
-echo "Installing idb-utils..\n"
+echo "Installing idb-utils.."
 cd /root
 git clone https://github.com/ringo380/idb-utils.git
 
-echo "Setting up test database..\n"
+echo "Setting up test database.."
 # Download/extract sample db
 cd /tmp
 wget http://downloads.mysql.com/docs/sakila-db.tar.gz
@@ -117,12 +117,12 @@ mysql -e "SOURCE sakila-schema.sql"
 mysql -e "SOURCE sakila-data.sql"
 
 # Make copies of everything in the current state
-echo "Making backup copies of existing data..\n"
+echo "Making backup copies of existing data.."
 mkdir /root/mysql.bak
-echo "Backing up current my.cnf to /etc/my.cnf.orig..\n"
+echo "Backing up current my.cnf to /etc/my.cnf.orig.."
 cp /etc/my.cnf{,.orig}
 cp -Rp /var/lib/mysql/* /root/mysql.bak/
-echo "Dumping current databases to /root/mysql.bak..\n"
+echo "Dumping current databases to /root/mysql.bak.."
 mysqldump --all-databases > /root/mysql.bak/mysqldump.sql
 mysqldump --single-transaction --all-databases > /root/mysql.bak/mysqldump_st.sql
 mysqldump --single-transaction testdb > /tmp/testdb.sql
