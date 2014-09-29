@@ -58,6 +58,16 @@ for i in "$@"
 done
 }
 
+function isinstalled {
+  if yum list installed "$@" >/dev/null 2>&1; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+if isinstalled
+
 
 #converttodec () { echo "ibase=16; $1" | bc; }
 #alias todec=todec
@@ -65,8 +75,10 @@ alias tohex="printf '%x\n'"
 
 
 # Install bzr if it's not installed..
-rpm -qa | grep -q bzr || yum -y install bzr
+echo "Checking if Bazaar is installed..\n";
+if isinstalled "bzr"; then echo "Bazaar already installed.\n"; else echo "Not installed, installing now.."; yum -y install bzr; fi
 
+echo "Installing Math::Int64 if needed..\n";
 perldoc -l Math::Int64 2> /dev/null | grep "Int64.pm" || cpan Math::Int64
 
 # Download/extract sample db
@@ -90,6 +102,5 @@ mkdir /root/mysql.bak
 cp /etc/my.cnf{,.orig}
 cp -Rp /var/lib/mysql/* /root/mysql.bak/
 mysqldump --all-databases > /root/mysql.bak/mysqldump.sql
-mysqldump --single-transaction --all-databases --events > /root/mysql.bak/mysqldump_st_events.sql
-
+mysqldump --single-transaction --all-databases > /root/mysql.bak/mysqldump_st.sql
 mysqldump --single-transaction testdb > /tmp/testdb.sql
