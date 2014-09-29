@@ -72,6 +72,7 @@ alias tohex="printf '%x\n'"
 
 echo "Installing RVM..\n"
 \curl -sSL https://get.rvm.io | bash
+sleep 15
 source /etc/profile.d/rvm.sh
 
 echo "Installing Ruby 1.9.3..\n"
@@ -79,10 +80,10 @@ rvm install ruby-1.9.3
 
 # Install bzr if it's not installed..
 echo "Checking if Bazaar is installed..\n"
-if isinstalled "bzr"; then echo "Bazaar already installed.\n"; else echo "Not installed, installing now..\n"; yum -y install bzr; fi
+if yum list installed "bzr" > /dev/null 2>&1; then echo "Bazaar already installed.\n"; else echo "Not installed, installing now..\n"; yum -y install bzr; fi
 
 echo "Checking if git is installed..\n"
-if isinstalled "git"; then echo "Git already installed.\n"; else echo "Not installed, installing now..\n"; yum -y install git; fi
+if yum list installed "git" > /dev/null 2>&1; then echo "Git already installed.\n"; else echo "Not installed, installing now..\n"; yum -y install git; fi
 
 echo "Installing Math::Int64 if needed..\n"
 perldoc -l Math::Int64 2> /dev/null | grep "Int64.pm" || cpan Math::Int64
